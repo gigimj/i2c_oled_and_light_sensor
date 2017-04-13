@@ -1,4 +1,8 @@
 # i2c_oled_and_light_sensor
+
+THIS CODE IS IN PROGRESS
+IT CURRENTLY DOESN'T WORK
+
 this code uses an i2c oled screen and an i2c light sensor and a lightblue bean
 
 oled screen:

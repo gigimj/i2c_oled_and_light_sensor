@@ -1,0 +1,38 @@
+#include <SPI.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+#include "Adafruit_SI1145.h"
+
+#define OLED_RESET 4
+Adafruit_SSD1306 display(OLED_RESET);
+Adafruit_SI1145 uv = Adafruit_SI1145();
+
+void setup() {
+  // put your setup code here, to run once:
+  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+  display.display();
+  delay(2000);
+
+  // Clear the buffer.
+  display.clearDisplay();
+
+
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  display.setTextSize(1);
+  display.setTextColor(WHITE);
+  display.setCursor(0,0);
+  display.print("Vis: "); display.println(uv.readVisible());
+  display.print("IR: "); display.println(uv.readIR());
+  float UVindex = uv.readUV();
+  // the index is multiplied by 100 so to get the
+  // integer index, divide by 100!
+  UVindex /= 100.0;  
+  display.print("UV: ");  display.println(UVindex);
+  display.display();
+  delay(2000);
+  display.clearDisplay();
+}

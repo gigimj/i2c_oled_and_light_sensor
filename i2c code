@@ -1,38 +1,45 @@
-#include <SPI.h>
 #include <Wire.h>
+#include <SPI.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 #include "Adafruit_SI1145.h"
 
-#define OLED_RESET 4
-Adafruit_SSD1306 display(OLED_RESET);
 Adafruit_SI1145 uv = Adafruit_SI1145();
 
+#define OLED_RESET 4
+Adafruit_SSD1306 display(OLED_RESET);
+
 void setup() {
-  // put your setup code here, to run once:
+  Serial.begin(9600);
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+  Serial.println("Adafruit SI1145 test");
+  
+  if (! uv.begin()) {
+    Serial.println("Didn't find Si1145");
+    while (1);
+  }
   display.display();
   delay(2000);
-
-  // Clear the buffer.
+  Serial.println("OK!");
   display.clearDisplay();
-
-
+  
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
   display.setTextSize(1);
   display.setTextColor(WHITE);
   display.setCursor(0,0);
   display.print("Vis: "); display.println(uv.readVisible());
   display.print("IR: "); display.println(uv.readIR());
+  Serial.print("Vis: "); Serial.println(uv.readVisible());
+  Serial.print("IR: "); Serial.println(uv.readIR());
   float UVindex = uv.readUV();
-  // the index is multiplied by 100 so to get the
-  // integer index, divide by 100!
   UVindex /= 100.0;  
+  Serial.print("UV: ");  Serial.println(UVindex);
   display.print("UV: ");  display.println(UVindex);
+  display.print("BPM: "); 
   display.display();
-  delay(2000);
+  delay(1000);
   display.clearDisplay();
+
 }
